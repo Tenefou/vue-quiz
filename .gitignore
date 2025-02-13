@@ -1,30 +1,41 @@
+# Node modules
+node_modules/
+
+# Vite
+.vite/
+
+# Vite build output
+dist/
+
 # Logs
-logs
-*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
 
-node_modules
+# IDE/Editor config files
+.idea/
+.vscode/
+
+# OS generated files
 .DS_Store
-dist
-dist-ssr
-coverage
-*.local
+Thumbs.db
 
-/cypress/videos/
-/cypress/screenshots/
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
+# TypeScript
 *.tsbuildinfo
+
+# Vitest cache
+.vitest/
+
+# dotenv environment files
+.env
+.env.*.local
+
+# JetBrains project files
+*.iml
+
+# Temporary files
+*.bak
+*.swp
+
+# System files (Windows specific)
+Desktop.ini
