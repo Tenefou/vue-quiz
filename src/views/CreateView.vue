@@ -1,7 +1,11 @@
 <template>
   <HeaderComponent />
   <main>
-    <div class="manage-view">create</div>
+    <h1>Create Quiz</h1>
+    <form>
+      <input type="text" id="title" name="title" />
+      <button type="submit">Create</button>
+    </form>
   </main>
 </template>
 

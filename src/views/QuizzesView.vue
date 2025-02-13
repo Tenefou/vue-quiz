@@ -3,7 +3,7 @@
   <main>
     <div class="quizzes-view">
       <h1>Quizzes</h1>
-      <ul>
+      <ul v-if="quizzes.length">
         <li v-for="quiz in quizzes" :key="quiz.id">
           {{ quiz.title }}
         </li>
@@ -14,13 +14,10 @@
 
 <script setup lang="ts">
 import HeaderComponent from '../components/HeaderComponent.vue'
-import { ref } from 'vue'
+import { useQuizStore } from '@/stores/quizStore'
 
-const quizzes = ref([
-  { id: 1, title: 'Quiz 1' },
-  { id: 2, title: 'Quiz 2' },
-  { id: 3, title: 'Quiz 3' },
-])
+const quizStore = useQuizStore()
+const quizzes = quizStore.quizzes
 </script>
 
 <style scoped>
