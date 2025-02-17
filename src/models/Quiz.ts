@@ -2,10 +2,12 @@ import { Question } from './Question'
 
 export class Quiz {
   id: string
-  Questions: Question[]
+  title: string
+  questions: Question[]
 
-  constructor(id: string, Questions: Question[]) {
+  constructor(id: string, title: string, questions: Question[]) {
     this.id = id
-    this.Questions = Questions
+    this.title = title
+    this.questions = questions
   }
 }
