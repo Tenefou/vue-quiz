@@ -44,20 +44,23 @@ const quizStore = useQuizStore()
 const quizzes = quizStore.getQuizzes
 
 const changerQuestion = (plus: number) => {
+  console.log(numberQuestion.value)
   if (
-    numberQuestion.value < 0 ||
-    numberQuestion.value >= quizzes[numberQuizzes.value].questions.length
+    numberQuestion.value + plus < 0 ||
+    numberQuestion.value + plus + 1 > quizzes[numberQuizzes.value].questions.length
   ) {
     return null
-  } else {
-    numberQuestion.value += plus
   }
+
+  numberQuestion.value += plus
 }
 
 const changerQuiz = (plus: number) => {
-  if (numberQuizzes.value + 1 > 0 && numberQuizzes.value + 1 <= quizzes.length) {
-    numberQuestion.value = numberQuizzes.value + plus
+  if (numberQuizzes.value + plus < 0 || numberQuizzes.value + plus + 1 > quizzes.length) {
+    console.log(quizzes.length)
+    return null
   }
+  numberQuizzes.value = numberQuizzes.value + plus
 }
 </script>
 
