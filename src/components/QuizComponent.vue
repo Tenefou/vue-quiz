@@ -1,7 +1,7 @@
 <template>
   <div class="quizzes-view">
-    <ul v-if="quizzes.length">
-      <li>
+    <div v-if="quizzes.length">
+      <div>
         <h1>{{ quizzes[numberQuizzes].title }}</h1>
         <hr />
 
@@ -19,56 +19,17 @@
             {{ answer.answer }}
           </li>
         </ul>
-      </li>
-      <div>
-        <button
-          @click="
-            numberQuestion > 0
-              ? numberQuestion--
-              : console.log(
-                  'number question = ' +
-                    numberQuestion +
-                    ' Number quizzs = ' +
-                    quizzes[numberQuizzes].questions.length,
-                )
-          "
-        >
-          précédent
-        </button>
-        <button
-          @click="
-            numberQuestion + 1 < quizzes[numberQuizzes].questions.length
-              ? numberQuestion++
-              : console.log('number question = ' + numberQuestion)
-          "
-        >
-          suivant
-        </button>
+      </div>
+      <div class="buttons">
+        <button @click="changerQuestion(-1)">précédent</button>
+        <button @click="changerQuestion(1)">suivant</button>
       </div>
       <br />
       <div>
-        <button
-          @click="
-            numberQuizzes + 1 > quizzes[numberQuizzes].questions.length
-              ? numberQuizzes--
-              : console.log(
-                  'number question = ' + numberQuizzes + ' Number quizzs = ' + quizzes.length,
-                )
-          "
-        >
-          Quiz précédent
-        </button>
-        <button
-          @click="
-            numberQuizzes + 1 < quizzes.length
-              ? numberQuizzes++
-              : console.log('number question = ' + numberQuizzes)
-          "
-        >
-          Quiz suivant
-        </button>
+        <button @click="changerQuiz(-1)">Quiz précédent</button>
+        <button @click="changerQuiz(1)">Quiz suivant</button>
       </div>
-    </ul>
+    </div>
   </div>
 </template>
 
@@ -81,10 +42,40 @@ const numberQuizzes = ref(0)
 
 const quizStore = useQuizStore()
 const quizzes = quizStore.getQuizzes
+
+const changerQuestion = (plus: number) => {
+  if (
+    numberQuestion.value < 0 ||
+    numberQuestion.value >= quizzes[numberQuizzes.value].questions.length
+  ) {
+    return null
+  } else {
+    numberQuestion.value += plus
+  }
+}
+
+const changerQuiz = (plus: number) => {
+  if (numberQuizzes.value + 1 > 0 && numberQuizzes.value + 1 <= quizzes.length) {
+    numberQuestion.value = numberQuizzes.value + plus
+  }
+}
 </script>
 
 <style scoped>
 .quizzes-view {
-  border: 2vh solid hsla(160, 100%, 37%, 0.2);
+  border: 2vh solid hsla(160, 100%, 37%, 0.8);
+}
+
+button {
+  color: hsla(160, 100%, 37%, 0.7);
+  background-color: #333;
+  border-radius: 0.5vh;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 2vh;
+  margin-top: 2vh;
 }
 </style>

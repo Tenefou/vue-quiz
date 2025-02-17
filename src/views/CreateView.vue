@@ -11,11 +11,22 @@
         <label for="title">Question {{ numberQuestion }}</label>
         <input type="text" id="question" name="question" v-model="intitule" />
         <label for="">Réponse 1</label>
-        <input type="text" id="answer1" name="answer1" v-model="answersString[0]" />
+        <div class="reponse-section">
+          <input type="text" id="answer1" name="answer1" v-model="answersString[0]" />
+          <input type="radio" v-model="vrai" :value="1" />
+        </div>
+
         <label for="">Réponse 2</label>
-        <input type="text" id="answer2" name="answer2" v-model="answersString[1]" />
+        <div class="reponse-section">
+          <input type="text" id="answer2" name="answer2" v-model="answersString[1]" />
+          <input type="radio" v-model="vrai" :value="2" />
+        </div>
+
         <label for="">Réponse 3</label>
-        <input type="text" id="answer3" name="answer3" v-model="answersString[2]" />
+        <div class="reponse-section">
+          <input type="text" id="answer3" name="answer3" v-model="answersString[2]" />
+          <input type="radio" v-model="vrai" :value="3" />
+        </div>
       </div>
       <div style="display: flex; gap: 3vh">
         <button @click="handleAdd" type="button">Ajouter question</button>
@@ -24,6 +35,7 @@
     </form>
     <div>{{ questions }}</div>
     <div>{{ quizStore.getQuizzes }}</div>
+    <div>{{ vrai }}</div>
   </main>
 </template>
 
@@ -47,8 +59,12 @@ const intitule = ref('')
 
 const answersString = ref<string[]>(['', '', ''])
 
+const vrai = ref(0)
+
 const handleAdd = () => {
-  const answers = answersString.value.map((answer) => new Answer(answer, true))
+  const answers = answersString.value.map(
+    (answer) => new Answer(answer, vrai.value === answersString.value.indexOf(answer)),
+  )
 
   const newQuestion = new Question(intitule.value, numberQuestion.value.toString(), answers)
 
@@ -67,6 +83,12 @@ form {
   display: flex;
   flex-direction: column;
   gap: 5vh;
+}
+
+.reponse-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .form-group {
