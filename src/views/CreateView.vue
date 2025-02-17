@@ -23,13 +23,14 @@
       </div>
     </form>
     <div>{{ questions }}</div>
+    <div>{{ quizStore.getQuizzes }}</div>
   </main>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
 import HeaderComponent from '../components/HeaderComponent.vue'
-import { useQuizStore } from '../stores/quizStore'
+import { useQuizStore } from '../stores/QuizStore'
 import { Quiz } from '../models/Quiz'
 import { Question } from '../models/Question'
 import { Answer } from '../models/Answer'

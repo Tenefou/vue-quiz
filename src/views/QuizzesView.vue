@@ -1,23 +1,16 @@
 <template>
   <HeaderComponent />
+
   <main>
     <div class="quizzes-view">
-      <h1>Quizzes</h1>
-      <ul v-if="quizzes.length">
-        <li v-for="quiz in quizzes" :key="quiz.id">
-          {{ quiz.title }}
-        </li>
-      </ul>
+      <QuizComponent />
     </div>
   </main>
 </template>
 
 <script setup lang="ts">
 import HeaderComponent from '../components/HeaderComponent.vue'
-import { useQuizStore } from '@/stores/quizStore'
-
-const quizStore = useQuizStore()
-const quizzes = quizStore.quizzes
+import QuizComponent from '../components/QuizComponent.vue'
 </script>
 
 <style scoped>
@@ -38,5 +31,14 @@ ul {
 li {
   margin-bottom: 10px;
   font-size: 18px;
+}
+
+.quizzes-view {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  width: 40vh;
+  gap: 20px;
 }
 </style>

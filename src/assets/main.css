@@ -34,3 +34,15 @@ main {
   flex-direction: column;
   height: 91vh;
 }
+
+h1 {
+  font-size: 4vh;
+}
+
+h2 {
+  font-size: 3vh;
+}
+
+h3 {
+  font-size: 2vh;
+}
