@@ -1,41 +1,52 @@
 <template>
   <div class="quizzes-view">
-    <div v-if="quizzes.length">
-      <div>
-        <h1>{{ quizzes[numberQuizzes].title }}</h1>
-        <hr />
+    <div class="quiz-form" v-if="quizzes.length">
+      <h1>{{ quizzes[numberQuizzes].title }}</h1>
+      <hr />
 
-        <p>{{ quizzes[numberQuizzes].questions.length }} questions</p>
-        <hr />
-        <br />
-        <h1>Question {{ numberQuestion + 1 }}</h1>
-        <h2>{{ quizzes[numberQuizzes].questions[numberQuestion].question }}</h2>
-        <br />
-        <ul>
-          <li
-            v-for="answer in quizzes[numberQuizzes].questions[numberQuestion].answers"
-            :key="answer.answer"
-          >
+      <p>{{ quizzes[numberQuizzes].questions.length }} questions</p>
+      <hr />
+
+      <h1 style="padding: 20px">Question {{ numberQuestion + 1 }}</h1>
+      <h2>{{ quizzes[numberQuizzes].questions[numberQuestion].question }}</h2>
+
+      <ul style="margin-bottom: 30px">
+        <li v-for="answer in answers" :key="answer.answer">
+          <div class="answers">
             {{ answer.answer }}
-          </li>
-        </ul>
-      </div>
+            <input type="radio" :value="answers.indexOf(answer)" />
+          </div>
+        </li>
+      </ul>
+
+      <div v-if="done">{{ score }} / {{ quizzes[numberQuizzes].questions.length }}</div>
+
       <div class="buttons">
-        <button @click="changerQuestion(-1)">précédent</button>
-        <button @click="changerQuestion(1)">suivant</button>
-      </div>
-      <br />
-      <div>
-        <button @click="changerQuiz(-1)">Quiz précédent</button>
-        <button @click="changerQuiz(1)">Quiz suivant</button>
+        <div>
+          <button @click="changerQuestion(-1)">précédent</button>
+          <button @click="changerQuestion(1)">
+            {{
+              quizzes[numberQuizzes].questions.length - 1 === numberQuestion
+                ? 'terminer'
+                : 'suivant'
+            }}
+          </button>
+        </div>
+        <div>
+          <button @click="changerQuiz(-1)">Quiz précédent</button>
+          <button @click="changerQuiz(1)">Quiz suivant</button>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, Ref, ref } from 'vue'
 import { useQuizStore } from '../stores/QuizStore'
+
+const score = ref(0)
+const done = ref(false)
 
 const numberQuestion = ref(0)
 const numberQuizzes = ref(0)
@@ -43,30 +54,50 @@ const numberQuizzes = ref(0)
 const quizStore = useQuizStore()
 const quizzes = quizStore.getQuizzes
 
-const changerQuestion = (plus: number) => {
-  console.log(numberQuestion.value)
-  if (
-    numberQuestion.value + plus < 0 ||
-    numberQuestion.value + plus + 1 > quizzes[numberQuizzes.value].questions.length
-  ) {
+const answers = computed(() => quizzes[numberQuizzes.value].questions[numberQuestion.value].answers)
+
+const changValeur = (val: Ref<number>, plus: number, max: number) => {
+  if (val.value + plus < 0 || val.value + plus + 1 > max) {
+    if (val.value + plus + 1 > max) {
+      console.log(done.value)
+      done.value = true
+    }
     return null
   }
+  done.value = false
+  val.value += plus
+}
 
-  numberQuestion.value += plus
+const changerQuestion = (plus: number) => {
+  if (plus === 1) {
+    const radios = document.querySelectorAll('input[type="radio"]')
+    radios.forEach((radio) => {
+      const input = radio as HTMLInputElement
+      if (input.checked) {
+        console.log(answers.value[Number(input.value)])
+        if (answers.value[Number(input.value)].isCorrect) {
+          score.value++
+        }
+      }
+    })
+  }
+  changValeur(numberQuestion, plus, quizzes[numberQuizzes.value].questions.length)
 }
 
 const changerQuiz = (plus: number) => {
-  if (numberQuizzes.value + plus < 0 || numberQuizzes.value + plus + 1 > quizzes.length) {
-    console.log(quizzes.length)
-    return null
-  }
-  numberQuizzes.value = numberQuizzes.value + plus
+  changValeur(numberQuizzes, plus, quizzes.length)
+  numberQuestion.value = 0
 }
 </script>
 
 <style scoped>
 .quizzes-view {
-  border: 2vh solid hsla(160, 100%, 37%, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+
+  border-width: 2rem;
 }
 
 button {
@@ -77,8 +108,33 @@ button {
 
 .buttons {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   gap: 2vh;
   margin-top: 2vh;
+}
+
+.buttons div {
+  display: flex;
+  justify-content: space-between;
+  gap: 2vh;
+}
+
+.answers {
+  display: flex;
+  justify-content: space-between;
+  gap: 2vh;
+  margin: 2vh;
+}
+
+.quiz-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1vh;
+  border: 2px solid #333;
+  border-radius: 1vh;
+  color: white;
+  width: 30vh;
+  padding: 10px;
 }
 </style>

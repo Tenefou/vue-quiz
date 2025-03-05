@@ -9,8 +9,13 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import HeaderComponent from '../components/HeaderComponent.vue'
 import QuizComponent from '../components/QuizComponent.vue'
+
+if (localStorage.getItem('score')) {
+  score.value = parseInt(localStorage.getItem('score')!)
+}
 </script>
 
 <style scoped>
