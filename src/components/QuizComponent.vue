@@ -14,7 +14,7 @@
         <li v-for="answer in answers" :key="answer.answer">
           <div class="answers">
             {{ answer.answer }}
-            <input type="radio" :value="answers.indexOf(answer)" />
+            <input type="radio" :value="answers.indexOf(answer)" v-model="choix" />
           </div>
         </li>
       </ul>
@@ -47,6 +47,7 @@ import { useQuizStore } from '../stores/QuizStore'
 
 const score = ref(0)
 const done = ref(false)
+const choix = ref('')
 
 const numberQuestion = ref(0)
 const numberQuizzes = ref(0)
@@ -77,6 +78,7 @@ const changerQuestion = (plus: number) => {
         console.log(answers.value[Number(input.value)])
         if (answers.value[Number(input.value)].isCorrect) {
           score.value++
+          choix.value = ''
         }
       }
     })
@@ -87,6 +89,7 @@ const changerQuestion = (plus: number) => {
 const changerQuiz = (plus: number) => {
   changValeur(numberQuizzes, plus, quizzes.length)
   numberQuestion.value = 0
+  score.value = 0
 }
 </script>
 
